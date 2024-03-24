@@ -16,6 +16,6 @@ class infow():
         search.send_keys(query)
         search.send_keys(Keys.RETURN)
 
-        time.sleep(10)  # Wait for 10 seconds
+        time.sleep(60)  # Wait for 10 seconds
         self.driver.quit()
         

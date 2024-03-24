@@ -1,5 +1,3 @@
-pip install randfacts;
-
 import randfacts
 
 elif "fact" or "facts" in text2:
