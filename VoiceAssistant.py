@@ -5,8 +5,9 @@ import randfacts
 from Jokes import joke
 from Weather import temp, des
 import datetime
-from Ruchir import *
-from News import *
+import time
+from Youtube import YouTubeSearchAndPlay
+from News import NewsFetcher
 
 engine = p.init()
 rate=engine.getProperty('rate')
@@ -37,9 +38,9 @@ today_date = datetime.datetime.now()
 r = sr.Recognizer()
 
 speak(f"{greeting}, I'm Juno, Your Voice Assistant.")
-speak("Today is " + today_date.strftime("%A") + ", " + today_date.strftime("%d") + " " + today_date.strftime("%B") + " " + today_date.strftime("%Y") + "And it's currently " + today_date.strftime("%I") + ":" + today_date.strftime("%M") + " " + today_date.strftime("%p") + ".")
-speak("The Temperature in Mumbai is " + str(temp()) + " degree celsius with " + des() + " weather")
-speak("How are you feeling today?")
+#speak("Today is " + today_date.strftime("%A") + ", " + today_date.strftime("%d") + " " + today_date.strftime("%B") + " " + today_date.strftime("%Y") + "And it's currently " + today_date.strftime("%I") + ":" + today_date.strftime("%M") + " " + today_date.strftime("%p") + ".")
+#speak("The Temperature in Mumbai is " + str(temp()) + " degree celsius with " + des() + " weather")
+#speak("How are you feeling today?")
 with sr.Microphone() as source:
     r.energy_threshold=10000
     r.adjust_for_ambient_noise(source,1.2)
@@ -90,7 +91,7 @@ elif "fact" in text2 or "facts" in text2:
     speak("Did you know that, "+x)
 
 elif "play" and "video" in text2:
-    speak("you want me toplay which video??")
+    speak("you want me to play which video??")
     with sr.Microphone() as source:
         r.energy_threshold=10000
         r.adjust_for_ambient_noise(source,1.2)
@@ -100,15 +101,22 @@ elif "play" and "video" in text2:
     print("Playing {} on youtube".format(vid))
     speak("Playing {} on youtube".format(vid))
 
-    assist = music()
+    assist = YouTubeSearchAndPlay()
     assist.play(vid)
+    #time.sleep(60)
 
 elif "news" in text2:
-    print("Sure sir, Now i will read news for you.")
-    speak("Sure sir, Now i will read news for you.")
+    print("Sure sir, Now i will show news for you.")
+    speak("Sure sir, Now i will show news for you.")
     
-    arr=news()
-    for i in range(len(arr)):
-        print(arr[i])
-        speak(arr[i])
+    news_fetcher = NewsFetcher(api_key="d8b2236966eb4b9f846b51de364d93f4")
+    articles = news_fetcher.fetch_news()
+
+    for article in articles:
+        news_title = article['title']
+        news_description = article['description']
+        news_source = article['source']['name']
+        news_text = f"{news_title}. {news_description}. From {news_source}."
+        print(news_text)
+        speak(news_text)
         
