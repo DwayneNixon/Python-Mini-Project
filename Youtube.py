@@ -5,16 +5,14 @@ from selenium.webdriver.common.keys import Keys
 
 class YouTubeSearchAndPlay():
     def __init__(self):
-        options = webdriver.ChromeOptions()
-        options.add_argument("start-maximized")
-        self.driver = webdriver.Chrome(options=options)
+     self.driver = webdriver.Chrome()
+
 
     def search_and_play(self, query):
         self.query = query
-        self.driver.get("https://www.youtube.com")
-        search = self.driver.find_element(By.XPATH, '//*[@id="search"]')
-        search.send_keys(query)
-        search.send_keys(Keys.RETURN)
+        self.driver.get(url="https://www.youtube.com/results?search_query="+query)
+        video = self.driver.find_element(By.XPATH, '//*[@id="meta"]')
+        video.click()
 
         #time.sleep(5)  # Wait for 5 seconds for search results to load
         # Click on the first video that appears in the search results
